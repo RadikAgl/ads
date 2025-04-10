@@ -1,0 +1,13 @@
+[
+{
+    "model": "ads_app.exchangeproposal",
+    "pk": 4,
+    "fields": {
+        "ad_sender": 2,
+        "ad_receiver": 1,
+        "comment": "Мне нужно яблоко",
+        "status": "a",
+        "created_at": "2025-04-10T06:50:24.279Z"
+    }
+}
+]

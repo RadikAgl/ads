@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Список товаров{% endblock %}
+{% block content %}
+
+    {% if have_user_ads %}
+    <a href="{% url 'ads_app:ads-expr-create' %}">
+       <p>Создать обменное предложение</p>
+    </a>
+    {% endif %}
+
+<h2>Параметры фильтрации</h2>
+<form method="get">
+    {{ filter.form.as_p }}
+    <input type="submit" />
+</form>
+<h2>Список товаров</h2>
+ <div>
+     <ul>
+         {% for ad in ads %}
+            <li>
+                <h3>Название товара: {{ ad.title }}</h3>
+                <p>Описание товара: {{ ad.description }}</p>
+                <p>Автор публикации: {{ ad.user }}</p>
+                <p>Категория товара: {{ ad.category }}</p>
+                <p>Статус товара: {{ ad.get_condition_display }}</p>
+                <p>Дата создания публикации: {{ ad.created_at }}</p>
+                {% if ad.image %}
+                    <div>
+                       <img src="{{ ad.image.url }}" alt="{{ ad.title }}" width="300">
+                    </div>
+                {% endif %}
+                {% if request.user == ad.user %}
+                <a href="{% url 'ads_app:ads-update' pk=ad.id %}">
+                   <p>Редактировать</p>
+                </a>
+                <a href="{% url 'ads_app:ads-delete' pk=ad.id %}">
+                   <p>Удалить</p>
+                </a>
+                {% endif %}
+                </li>
+         {% endfor %}
+     </ul>
+ </div>
+
+
+{% if ads %}
+    <div>
+        {% for p in paginator.page_range %}
+           {% if page_obj.number == p %}
+                <a href="#"><span style="margin-right: 10px"><strong>{{ p }}</strong></span></a>
+           {% else %}
+                {% if is_params %}
+                     <a href="{{ cur_url }}&page={{ p }}"><span style="margin-right: 10px">{{ p }}</span></a>
+                {% else %}
+                     <a href="?page={{ p }}"><span style="margin-right: 10px">{{ p }}</span></a>
+                {% endif %}
+           {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
