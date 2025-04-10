@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Список предложений {% endblock %}
+
+{% block content %}
+<h2>Параметры фильтрации</h2>
+<form method="get">
+    {{ filter.form.as_p }}
+    <input type="submit" />
+</form>
+<h2>Список предложений</h2>
+ <div>
+     <ul>
+         {% for ep in exproposals %}
+            <li>
+                <h3>Предложенный товар: {{ ep.ad_sender }}</h3>
+                <p>Требуемый товар: {{ ep.ad_receiver }}</p>
+                <p>Инициатор предожения: {{ ep.ad_sender.user }}</p>
+                <p>Комментарий: {{ ep.comment }}</p>
+                <p>Статус товара: {{ ep.get_status_display }}</p>
+                <p>Дата создания предложения: {{ ep.created_at }}</p>
+                {% if ep.status == "w" and ep.ad_sender.user == request.user %}
+                <form method = "POST">
+                    {% csrf_token %}
+                    <input type="hidden" id="ep_id" name="ep_id" value="{{ep.id}}" />
+                    <button type="submit" value="accept" name="status">Принять</button>
+                    <button type="submit" value="reject" name="status">Отклонить</button>
+                </form>
+                {% endif %}
+                </li>
+         {% endfor %}
+     </ul>
+ </div>
+
+
+{% if exproposals %}
+    <div>
+        {% for p in paginator.page_range %}
+           {% if page_obj.number == p %}
+                <a href="#"><span style="margin-right: 10px"><strong>{{ p }}</strong></span></a>
+           {% else %}
+                {% if is_params %}
+                     <a href="{{ cur_url }}&page={{ p }}"><span style="margin-right: 10px">{{ p }}</span></a>
+                {% else %}
+                     <a href="?page={{ p }}"><span style="margin-right: 10px">{{ p }}</span></a>
+                {% endif %}
+           {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
