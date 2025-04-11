@@ -20,8 +20,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from ads_app.routes import router
+
 urlpatterns = [
     path("", include(("ads_app.urls", "ads_app"), namespace="ads_app")),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(router.urls)),
     path("admin/", admin.site.urls),
 ]
 
