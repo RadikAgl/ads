@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "ads_app",
+    "ads_app.apps.AdsAppConfig",
 ]
 
 MIDDLEWARE = [
@@ -118,8 +118,8 @@ USE_I18N = True
 USE_TZ = True
 
 
-LOGOUT_REDIRECT_URL = "/ads/"
-LOGIN_REDIRECT_URL = "/ads/"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/"
 
 
 # Static files (CSS, JavaScript, Images)
